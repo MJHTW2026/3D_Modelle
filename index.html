@@ -85,47 +85,33 @@
   ></model-viewer>
 
   <script>
-<script>
-  const select = document.getElementById("modelSelect");
+    const select = document.getElementById("modelSelect");
   const viewer = document.getElementById("viewer");
 
   const modelSettings = {
-    "Anstauchen.glb":         "180deg 90deg auto",
-    "Bohren.glb":             "90deg 90deg auto",
-    "Drehen.glb":             "90deg 90deg auto",
-    "Fliesspressen.glb":      "270deg 90deg auto",
-    "Fraesen.glb":            "180deg 90deg auto",
-    "Kegelstauchen.glb":      "180deg 90deg auto",
-    "Lochen.glb":             "180deg 90deg auto",
-    "Praegen.glb":            "180deg 90deg auto",
-    "Scherschneiden.glb":     "180deg 90deg auto",
-    "Tiefziehen_Napf.glb":    "180deg 90deg auto",
+    "Anstauchen.glb":        "180deg 90deg auto",
+    "Bohren.glb":            "90deg 90deg auto",
+    "Drehen.glb":            "90deg 90deg auto",
+    "Fliesspressen.glb":     "270deg 90deg auto",
+    "Fraesen.glb":           "180deg 90deg auto",
+    "Kegelstauchen.glb":     "180deg 90deg auto",
+    "Lochen.glb":            "180deg 90deg auto",
+    "Praegen.glb":           "180deg 90deg auto",
+    "Scherschneiden.glb":    "180deg 90deg auto",
+    "Tiefziehen_Napf.glb":   "180deg 90deg auto",
     "Tiefziehen_Rechteck.glb":"180deg 90deg auto"
   };
 
- select.addEventListener("change", () => {
-  const model = select.value;
+  select.addEventListener("change", () => {
+    const model = select.value;
 
-  viewer.style.display = "block";
-  viewer.src = model;
+    viewer.src = model;
+    viewer.style.display = "block";
 
-  // Warten, bis Modell geladen ist
-  viewer.addEventListener(
-    "load",
-    () => {
-      if (modelSettings[model]) {
-        viewer.cameraOrbit = modelSettings[model];
-      }
-
-      // Kamera auf das neue Modell "springen" und Benutzerrotation zurücksetzen
-      viewer.jumpCameraToGoal();
-      viewer.resetTurntableRotation(); // optional: wenn Turntable aktiv
-    },
-    { once: true }
-  );
-});
-</script>
-
+    if (modelSettings[model]) {
+      viewer.cameraOrbit = modelSettings[model];
+    }
+  });
   </script>
 
 </body>
