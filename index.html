@@ -72,7 +72,6 @@
   <model-viewer
     id="viewer"
     camera-controls
-    camera-orbit="180deg 90deg auto"
     autoplay
     animation-name="Animation"
     environment-image="neutral"
@@ -85,33 +84,48 @@
   ></model-viewer>
 
   <script>
-    const select = document.getElementById("modelSelect");
+<script>
+  const select = document.getElementById("modelSelect");
   const viewer = document.getElementById("viewer");
 
   const modelSettings = {
-    "Anstauchen.glb":        "180deg 90deg auto",
-    "Bohren.glb":            "90deg 90deg auto",
-    "Drehen.glb":            "90deg 90deg auto",
-    "Fliesspressen.glb":     "270deg 90deg auto",
-    "Fraesen.glb":           "180deg 90deg auto",
-    "Kegelstauchen.glb":     "180deg 90deg auto",
-    "Lochen.glb":            "180deg 90deg auto",
-    "Praegen.glb":           "180deg 90deg auto",
-    "Scherschneiden.glb":    "180deg 90deg auto",
-    "Tiefziehen_Napf.glb":   "180deg 90deg auto",
+    "Anstauchen.glb":         "180deg 90deg auto",
+    "Bohren.glb":             "90deg 90deg auto",
+    "Drehen.glb":             "90deg 90deg auto",
+    "Fliesspressen.glb":      "270deg 90deg auto",
+    "Fraesen.glb":            "180deg 90deg auto",
+    "Kegelstauchen.glb":      "180deg 90deg auto",
+    "Lochen.glb":             "180deg 90deg auto",
+    "Praegen.glb":            "180deg 90deg auto",
+    "Scherschneiden.glb":     "180deg 90deg auto",
+    "Tiefziehen_Napf.glb":    "180deg 90deg auto",
     "Tiefziehen_Rechteck.glb":"180deg 90deg auto"
   };
 
   select.addEventListener("change", () => {
     const model = select.value;
 
-    viewer.src = model;
     viewer.style.display = "block";
 
-    if (modelSettings[model]) {
-      viewer.cameraOrbit = modelSettings[model];
-    }
+    // src setzen
+    viewer.src = model;
+
+    // WICHTIG: erst NACH dem Laden die Kamera setzen
+    viewer.addEventListener(
+      "load",
+      () => {
+        if (modelSettings[model]) {
+          viewer.cameraOrbit = modelSettings[model];
+        }
+
+        // optional: Zoom/Kamera neu berechnen
+        viewer.jumpCameraToGoal();
+      },
+      { once: true } // <- verhindert Mehrfachausführung
+    );
   });
+</script>
+
   </script>
 
 </body>
