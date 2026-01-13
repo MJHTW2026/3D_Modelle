@@ -72,6 +72,7 @@
   <model-viewer
     id="viewer"
     camera-controls
+    camera-orbit="180deg 90deg auto"
     autoplay
     animation-name="Animation"
     environment-image="neutral"
@@ -102,28 +103,27 @@
     "Tiefziehen_Rechteck.glb":"180deg 90deg auto"
   };
 
-  select.addEventListener("change", () => {
-    const model = select.value;
+ select.addEventListener("change", () => {
+  const model = select.value;
 
-    viewer.style.display = "block";
+  viewer.style.display = "block";
+  viewer.src = model;
 
-    // src setzen
-    viewer.src = model;
+  // Warten, bis Modell geladen ist
+  viewer.addEventListener(
+    "load",
+    () => {
+      if (modelSettings[model]) {
+        viewer.cameraOrbit = modelSettings[model];
+      }
 
-    // WICHTIG: erst NACH dem Laden die Kamera setzen
-    viewer.addEventListener(
-      "load",
-      () => {
-        if (modelSettings[model]) {
-          viewer.cameraOrbit = modelSettings[model];
-        }
-
-        // optional: Zoom/Kamera neu berechnen
-        viewer.jumpCameraToGoal();
-      },
-      { once: true } // <- verhindert Mehrfachausführung
-    );
-  });
+      // Kamera auf das neue Modell "springen" und Benutzerrotation zurücksetzen
+      viewer.jumpCameraToGoal();
+      viewer.resetTurntableRotation(); // optional: wenn Turntable aktiv
+    },
+    { once: true }
+  );
+});
 </script>
 
   </script>
