@@ -52,18 +52,19 @@
   <!-- Auswahlmenü -->
   <div class="controls">
     <select id="modelSelect">
-	<option value="Anstauchen.glb">Anstauchen</option>
-     	<option value="Bohren.glb">Bohren</option>
-      	<option value="Drehen.glb">Drehen</option>
-     	 <option value="Fliesspressen.glb">Fliesspressen</option>
-     	 <option value="Fraesen.glb">Fraesen</option>
-     	<option value="Kegelstauchen.glb">Kegelstauchen</option>
-      	<option value="Lochen.glb">Lochen</option>
-      	<option value="Praegen.glb">Praegen</option>
-      	<option value="Scherschneiden.glb">Scherschneiden</option>
-      	<option value="Tiefziehen_Napf.glb">Tiefziehen_Napf</option>
-      	<option value="Tiefziehen_Rechteck.glb">Tiefziehen_Rechteck</option>
+	<option value="" selected disabled>Modell auswählen …</option>
 
+  	<option value="Anstauchen.glb">Anstauchen</option>
+  	<option value="Bohren.glb">Bohren</option>
+  	<option value="Drehen.glb">Drehen</option>
+  	<option value="Fliesspressen.glb">Fliesspressen</option>
+  	<option value="Fraesen.glb">Fraesen</option>
+  	<option value="Kegelstauchen.glb">Kegelstauchen</option>
+  	<option value="Lochen.glb">Lochen</option>
+  	<option value="Praegen.glb">Praegen</option>
+  	<option value="Scherschneiden.glb">Scherschneiden</option>
+  	<option value="Tiefziehen_Napf.glb">Tiefziehen Napf</option>
+  	<option value="Tiefziehen_Rechteck.glb">Tiefziehen Rechteck</option>
     </select>
   </div>
 
@@ -85,12 +86,32 @@
 
   <script>
     const select = document.getElementById("modelSelect");
-    const viewer = document.getElementById("viewer");
+  const viewer = document.getElementById("viewer");
 
-    select.addEventListener("change", () => {
-      viewer.src = select.value;
-      viewer.style.display = "block"; // <- jetzt anzeigen
-    });
+  const modelSettings = {
+    "Anstauchen.glb":        "180deg 90deg auto",
+    "Bohren.glb":            "90deg 90deg auto",
+    "Drehen.glb":            "0deg 90deg auto",
+    "Fliesspressen.glb":     "270deg 90deg auto",
+    "Fraesen.glb":           "180deg 90deg auto",
+    "Kegelstauchen.glb":     "180deg 90deg auto",
+    "Lochen.glb":            "180deg 90deg auto",
+    "Praegen.glb":           "180deg 90deg auto",
+    "Scherschneiden.glb":    "180deg 90deg auto",
+    "Tiefziehen_Napf.glb":   "180deg 90deg auto",
+    "Tiefziehen_Rechteck.glb":"180deg 90deg auto"
+  };
+
+  select.addEventListener("change", () => {
+    const model = select.value;
+
+    viewer.src = model;
+    viewer.style.display = "block";
+
+    if (modelSettings[model]) {
+      viewer.cameraOrbit = modelSettings[model];
+    }
+  });
   </script>
 
 </body>
