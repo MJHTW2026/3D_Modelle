@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D Modell Auswahl</title>
 
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
 
   <style>
     body {
@@ -29,20 +31,54 @@
       border: 1px solid #ccc;
     }
 
-    model-viewer {
-      display: none; /* <- ANFANGS VERSTECKT */
+    /* ===== Karte ===== */
+    .card {
       width: 95%;
-      height: 80%;
       max-width: 1000px;
-      max-height: 1000px;
-      background-color: #ffffff;
+      height: 80%;
+      background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Header IN der Karte ===== */
+    .card-header {
+      display: flex;
+      flex-direction: column; 
+      align-items: flex-start;
+      padding: 4px 4px;     /* sehr nah an die Kante */
+    }
+
+    .card-header img {
+      height: 20px;          /* kleines Logo */
+      margin-bottom: 4px;
+    }
+
+    .card-text {
+      margin-left: 0px;
+      font-size: 10px;       /* kleiner Text */
+    }
+
+    /* ===== Viewer ===== */
+    model-viewer {
+      width: 100%;
+      flex: 1;
+      border-radius: 0 0 12px 12px;
     }
 
     model-viewer::part(default-progress-bar),
     model-viewer::part(default-progress-mask) {
       display: none;
+    }
+
+    /* Footer */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -52,40 +88,55 @@
   <!-- Auswahlmenü -->
   <div class="controls">
     <select id="modelSelect">
-	<option value="" selected disabled>Modell auswählen …</option>
-
-  	<option value="Anstauchen.glb">Anstauchen</option>
-  	<option value="Bohren.glb">Bohren</option>
-  	<option value="Drehen.glb">Drehen</option>
-  	<option value="Fliesspressen.glb">Fliesspressen</option>
-  	<option value="Fraesen.glb">Fraesen</option>
-  	<option value="Kegelstauchen.glb">Kegelstauchen</option>
-  	<option value="Lochen.glb">Lochen</option>
-  	<option value="Praegen.glb">Praegen</option>
-  	<option value="Scherschneiden.glb">Scherschneiden</option>
-  	<option value="Tiefziehen_Napf.glb">Tiefziehen Napf</option>
-  	<option value="Tiefziehen_Rechteck.glb">Tiefziehen Rechteck</option>
+      <option value="" selected disabled>Modell auswählen …</option>
+      <option value="Anstauchen.glb">Anstauchen</option>
+      <option value="Bohren.glb">Bohren</option>
+      <option value="Drehen.glb">Drehen</option>
+      <option value="Fliesspressen.glb">Fliesspressen</option>
+      <option value="Fraesen.glb">Fraesen</option>
+      <option value="Kegelstauchen.glb">Kegelstauchen</option>
+      <option value="Lochen.glb">Lochen</option>
+      <option value="Praegen.glb">Praegen</option>
+      <option value="Scherschneiden.glb">Scherschneiden</option>
+      <option value="Tiefziehen_Napf.glb">Tiefziehen Napf</option>
+      <option value="Tiefziehen_Rechteck.glb">Tiefziehen Rechteck</option>
     </select>
   </div>
 
-  <!-- 3D Viewer -->
-  <model-viewer
-  id="viewer"
-  camera-controls
-  autoplay
-  animation-name="Animation"
-  environment-image="neutral"
-  shadow-intensity="0.5"
-  exposure="1"
-  interaction-prompt="none"
-  min-field-of-view="20deg"
-  max-field-of-view="80deg"
-  interpolation-decay="200"
-  ></model-viewer>
+  <!-- Karte -->
+  <div class="card" id="card">
+
+    <!-- Header -->
+    <div class="card-header">
+      <img src="Logohtw.png" alt="">
+      <div class="card-text">
+        Professur Umform- und Trenntechnik
+      </div>
+    </div>
+
+    <!-- 3D Viewer -->
+    <model-viewer
+      id="viewer"
+      camera-controls
+      autoplay
+      animation-name="Animation"
+      environment-image="neutral"
+      shadow-intensity="0.5"
+      exposure="1"
+      interaction-prompt="none"
+      min-field-of-view="20deg"
+      max-field-of-view="80deg"
+      interpolation-decay="200">
+    </model-viewer>
+
+  </div>
+
+  <div class="footer">created by: P. Hamann </div>
 
 <script>
   const select = document.getElementById("modelSelect");
   const viewer = document.getElementById("viewer");
+  const card = document.getElementById("card");
 
   const modelSettings = {
     "Anstauchen.glb":          "180deg 90deg auto",
@@ -104,30 +155,16 @@
   select.addEventListener("change", () => {
     const model = select.value;
 
-    viewer.style.display = "block";
-
-    // Interaktion kurz deaktivieren (verhindert Kamera-Vererbung)
     viewer.cameraControls = false;
-
-    // Neues Modell laden
     viewer.src = model;
 
-    viewer.addEventListener(
-      "load",
-      () => {
-        // Kamera explizit setzen
-        if (modelSettings[model]) {
-          viewer.cameraOrbit = modelSettings[model];
-        }
-
-        // Kamera erzwingen
-        viewer.jumpCameraToGoal();
-
-        // Interaktion wieder aktivieren
-        viewer.cameraControls = true;
-      },
-      { once: true }
-    );
+    viewer.addEventListener("load", () => {
+      if (modelSettings[model]) {
+        viewer.cameraOrbit = modelSettings[model];
+      }
+      viewer.jumpCameraToGoal();
+      viewer.cameraControls = true;
+    }, { once: true });
   });
 </script>
 
