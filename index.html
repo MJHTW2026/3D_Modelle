@@ -13,23 +13,33 @@
     html, body {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
     }
 
     body {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+
       min-height: 100svh;
+      padding: 16px;   /* ⭐ GLEICHER ABSTAND ALLSEITIG */
+
       background-color: #ffffff;
       font-family: Arial, sans-serif;
-
-      /* ⭐ KLEINER OFFSET NACH UNTEN */
-      padding-bottom: 16px;
     }
 
     /* ===== Auswahl ===== */
     .controls {
-      margin: 16px 0;
+      margin-bottom: 16px;
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: center;
     }
 
     select {
@@ -41,10 +51,12 @@
 
     /* ===== Karte ===== */
     .card {
-      width: 95%;
+      width: 100%;
       max-width: 1000px;
       max-height: 800px;
+
       flex: 1;
+
       background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -56,9 +68,6 @@
 
     /* ===== Header ===== */
     .card-header {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
       padding: 4px;
     }
 
@@ -86,7 +95,7 @@
     /* ===== Footer ===== */
     .card-footer {
       position: absolute;
-      bottom: 8px;   /* ⭐ Abstand nach unten */
+      bottom: 8px;
       right: 8px;
       font-size: 8px;
       color: #555;
