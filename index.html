@@ -19,9 +19,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100svh; /* Mobile safe */
+      min-height: 100svh;
       background-color: #ffffff;
       font-family: Arial, sans-serif;
+
+      /* ⭐ KLEINER OFFSET NACH UNTEN */
+      padding-bottom: 16px;
     }
 
     /* ===== Auswahl ===== */
@@ -39,8 +42,8 @@
     /* ===== Karte ===== */
     .card {
       width: 95%;
-      max-width: 1000px;   /* maximale Desktop-Größe */
-      max-height: 800px;   /* verhindert zu große Höhe */
+      max-width: 1000px;
+      max-height: 800px;
       flex: 1;
       background: #ffffff;
       border-radius: 12px;
@@ -83,8 +86,8 @@
     /* ===== Footer ===== */
     .card-footer {
       position: absolute;
-      bottom: 4px;
-      right: 4px;
+      bottom: 8px;   /* ⭐ Abstand nach unten */
+      right: 8px;
       font-size: 8px;
       color: #555;
       z-index: 10;
@@ -92,24 +95,15 @@
 
     /* ===== Mobile Feinschliff ===== */
     @media (max-width: 768px) {
-      .card-header img {
-        height: 16px;
-      }
-
-      .card-text {
-        font-size: 9px;
-      }
-
-      .card-footer {
-        font-size: 7px;
-      }
+      .card-header img { height: 16px; }
+      .card-text { font-size: 9px; }
+      .card-footer { font-size: 7px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Auswahl -->
   <div class="controls">
     <select id="modelSelect">
       <option value="" selected disabled>Modell auswählen …</option>
@@ -127,8 +121,7 @@
     </select>
   </div>
 
-  <!-- Karte -->
-  <div class="card" id="card">
+  <div class="card">
 
     <div class="card-header">
       <img src="Logohtw.png" alt="">
